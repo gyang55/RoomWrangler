@@ -3,13 +3,14 @@ package com.example.room_wrangler;
 import java.io.Serializable;
 
 public class Room implements Serializable {
-    int roomNumber;
-    int roomPicture;
-    int roomSize;
-    boolean hasTV;
-    boolean hasWhiteboard;
-    String roomName;
-    String roomDesc;
+    private final int roomNumber;
+    private final int roomPicture;
+    private final int roomSize;
+    private final boolean hasTV;
+    private final boolean hasWhiteboard;
+    private final String roomName;
+    private final String roomDesc;
+    private RoomBooking[] bookings;
 
     public Room(int roomNumber, int roomPicture, int roomSize, boolean hasTV, boolean hasWhiteboard,
                 String roomName, String roomDesc) {
