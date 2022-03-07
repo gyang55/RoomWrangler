@@ -2,6 +2,9 @@ package com.example.room_wrangler;
 
 import java.time.LocalDateTime;
 
+/**
+ * Booking details for rooms. The room object itself stores a list of bookings.
+ */
 public class RoomBooking {
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
