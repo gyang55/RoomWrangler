@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">room-wrangler</string>
+    <string name="bcit">BCIT</string>
+    <string name="string_roomwrangler">RoomWrangler</string>
+    <string name="room_pic">room_pic</string>
+    <string name="peopleicon">peopleIcon</string>
+    <string name="how_many_people">How many people?</string>
+    <string name="_6">6</string>
+    <string name="_5">5</string>
+    <string name="_4">4</string>
+    <string name="_3">3</string>
+    <string name="_2">2</string>
+    <string name="_1">1</string>
 </resources>
