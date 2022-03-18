@@ -12,7 +12,7 @@ public class UserAccount {
     //Must have the empty constructor
 
 
-    public UserAccount(String emailId, String password, String fName, String studentId) {
+    public UserAccount(String email, String password, String fName, String studentId) {
         this.email = email;
         this.password = password;
         this.fName = fName;
@@ -23,8 +23,8 @@ public class UserAccount {
         return email;
     }
 
-    public void setEmail(String emailId) {
-        this.email = emailId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

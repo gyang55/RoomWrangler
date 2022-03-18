@@ -16,9 +16,6 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ResultActivity"
-            android:exported="false" />
-        <activity
             android:name=".AccountActivity"
             android:exported="false" />
         <activity

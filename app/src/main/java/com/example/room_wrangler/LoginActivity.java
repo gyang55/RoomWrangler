@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
+    private FirebaseUser firebaseUser;
 
     private EditText userEmail, userPassword;
 
@@ -32,6 +34,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+//        if(firebaseUser != null) {
+//            startActivity(new Intent(this, AccountActivity.class));
+//            finish();
+//        }
 
         Button btn_login = findViewById(R.id.button_singIn_login);
 
@@ -72,5 +80,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
