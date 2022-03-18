@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
 
-    private EditText emailRegister, passwordRegister;
+    private EditText userEmail, userPassword;
 
 
     @Override
@@ -33,19 +33,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button btn_login = findViewById(R.id.button_login);
+        Button btn_login = findViewById(R.id.button_singIn_login);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference("Room Wrangler");
 
-        emailRegister = findViewById(R.id.editText_email_register);
-        passwordRegister = findViewById(R.id.editText_password_register);
+        userEmail = findViewById(R.id.editText_email_register);
+        userPassword = findViewById(R.id.editText_password_register);
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String strEmail = emailRegister.getText().toString();
-                String strPassword = passwordRegister.getText().toString();
+                String strEmail = userEmail.getText().toString();
+                String strPassword = userPassword.getText().toString();
 
                 mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
