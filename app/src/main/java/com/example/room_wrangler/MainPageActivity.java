@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainPageActivity extends AppCompatActivity implements RecyclerPicListener {
-    protected static Room[] rooms = {new Room(R.drawable.study_room_2, 400, "4", true,
+    protected static Room[] rooms = {new Room(R.drawable.study_room_1, 400, "4", true,
             true, "666", "Computer, 42 inch LCD Display, " +
             "Laptop Hookup, and Whiteboard"),
             new Room(R.drawable.study_room_2, 400, "4", true,
