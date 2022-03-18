@@ -6,14 +6,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+
     <ImageView
         android:id="@+id/imageView_item_room"
-        android:layout_width="200dp"
-        android:layout_height="160dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:contentDescription="@string/room_pic"
         tools:ignore="ImageContrastCheck"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,9 +30,11 @@
 
         <TextView
             android:id="@+id/textView_item_room_room_number"
-            android:layout_width="94dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/oxygen_light"
+            android:textColor="#000000"
             android:textSize="20sp" />
 
         <ImageView
@@ -42,7 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="8"
-            android:gravity="start|center_vertical" />
+            android:gravity="start|center_vertical"
+            android:textColor="#000000" />
     </LinearLayout>
 
     <TextView
@@ -51,5 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:textColor="#878787"
         android:textSize="16sp" />
 </LinearLayout>
