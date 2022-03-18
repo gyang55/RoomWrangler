@@ -1,10 +1,8 @@
 package com.example.room_wrangler;
 
-
 import androidx.annotation.NonNull;
-
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,63 +11,61 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginActivity extends AppCompatActivity {
-
+public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabase;
 
     private EditText emailRegister, passwordRegister;
-
+    private Button buttonRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        Button btn_login = findViewById(R.id.button_login);
+        setContentView(R.layout.activity_register);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference("Room Wrangler");
 
         emailRegister = findViewById(R.id.editText_email_register);
         passwordRegister = findViewById(R.id.editText_password_register);
+        buttonRegister = findViewById(R.id.button_login);
 
-        btn_login.setOnClickListener(new View.OnClickListener() {
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String strEmail = emailRegister.getText().toString();
                 String strPassword = passwordRegister.getText().toString();
 
-                mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                //firebase auth
+
+                mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish(); // destroy current activity
+                        if(task.isSuccessful()) {
+                            FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                            UserAccount account = new UserAccount();
+                            assert firebaseUser != null;
+                            account.setEmailId(firebaseUser.getEmail());
+                            account.setPassword(strPassword);
+                            account.setIdToken(firebaseUser.getUid());
+
+
+                            mDatabase.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
+
+                            Toast.makeText(RegisterActivity.this, "Register Succeed!", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Register Failed!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+            }
+        });
 
-            }
-        });
-        Button btn_register = findViewById(R.id.button_singUp_login);
-        btn_register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
     }
-
 }

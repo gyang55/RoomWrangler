@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "24284808820",
+    "project_id": "roomwrangler-1647562241926",
+    "storage_bucket": "roomwrangler-1647562241926.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24284808820:android:15122ec421a7050af1f321",
+        "android_client_info": {
+          "package_name": "com.example.room_wrangler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24284808820-rfc6nisp2tdufd9hh29itvqed5796hnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU6fyl3CY_M-4NeF54MT_odi90MNqXCJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24284808820-m56umrfsi15mqm82if4591sjrb8dnhqp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
