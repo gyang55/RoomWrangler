@@ -77,10 +77,10 @@ public class RegisterActivity extends AppCompatActivity {
                             FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                             UserAccount account = new UserAccount(strEmail, strPassword, strName, strStudentId);
                             assert firebaseUser != null;
-                            account.setEmailId(firebaseUser.getEmail());
+                            account.setEmail(firebaseUser.getEmail());
                             account.setPassword(strPassword);
                             account.setIdToken(firebaseUser.getUid());
-                            mDatabase.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
+                            mDatabase.child("user").child(firebaseUser.getUid()).setValue(account);
 
                             Toast.makeText(RegisterActivity.this, "Register Succeed!", Toast.LENGTH_SHORT).show();
 

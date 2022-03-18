@@ -2,7 +2,7 @@ package com.example.room_wrangler;
 
 public class UserAccount {
 
-    private String emailId;
+    private String email;
     private String password;
     private String idToken; // firebase Uid
     private String fName;
@@ -13,18 +13,18 @@ public class UserAccount {
 
 
     public UserAccount(String emailId, String password, String fName, String studentId) {
-        this.emailId = emailId;
+        this.email = email;
         this.password = password;
         this.fName = fName;
         this.studentId = studentId;
     }
 
-    public String getEmailId() {
-        return emailId;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
+    public void setEmail(String emailId) {
+        this.email = emailId;
     }
 
     public String getPassword() {

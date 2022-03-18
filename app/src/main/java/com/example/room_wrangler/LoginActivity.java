@@ -51,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
+                            intent.putExtra("email", strEmail);
                             startActivity(intent);
                             finish(); // destroy current activity
                         } else {

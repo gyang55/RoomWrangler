@@ -5,108 +5,68 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class AccountActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    Button logoutBtn;
-    TextView userName,userEmail,userId;
-    ImageView profileImage;
-    private GoogleApiClient googleApiClient;
-    private GoogleSignInOptions gso;
+public class AccountActivity extends AppCompatActivity {
+    private Button logoutBtn;
+    private TextView userName, userEmail, userStudentID;
+    private ImageView profileImage;
+    private String strEmail, strName, strStudentId;
+    private FirebaseDatabase database;
+    private DatabaseReference userRef;
+    private static final String USERS = "user";
+//    private ArrayList<RoomBooking>
+    String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        logoutBtn=(Button)findViewById(R.id.logoutBtn);
-        userName=(TextView)findViewById(R.id.name);
-        userEmail=(TextView)findViewById(R.id.email);
-        userId=(TextView)findViewById(R.id.userId);
-        profileImage=(ImageView)findViewById(R.id.profileImage);
+        Intent intent = getIntent();
+       email = intent.getStringExtra("email");
 
-        gso =  new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+        logoutBtn = findViewById(R.id.logoutBtn);
+        userName = findViewById(R.id.TextView_fName_account);
+        userEmail = findViewById(R.id.TextView_email_account);
+        userStudentID = findViewById(R.id.TextView_studentId_account);
+        profileImage = findViewById(R.id.profileImage);
 
-        googleApiClient=new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
-                .build();
+        database = FirebaseDatabase.getInstance();
+        userRef = database.getReference("user");
+        Log.d("tag", "///user reference///" + userRef.getKey());
 
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
-                                if (status.isSuccess()){
-                                    gotoMainActivity();
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"Session not close",Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren()) {
+
+                        Log.d("tag", "///user email///" + snapshot.getValue());
+                        userName.setText(ds.child("fName").getValue(String.class));
+                        userEmail.setText(email);
+                        userStudentID.setText(ds.child("studentId").getValue(String.class));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        OptionalPendingResult<GoogleSignInResult> opr= Auth.GoogleSignInApi.silentSignIn(googleApiClient);
-        if(opr.isDone()){
-            GoogleSignInResult result=opr.get();
-            handleSignInResult(result);
-        }else{
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }
-    }
-    private void handleSignInResult(GoogleSignInResult result){
-        if(result.isSuccess()){
-            GoogleSignInAccount account=result.getSignInAccount();
-            userName.setText(account.getDisplayName());
-            userEmail.setText(account.getEmail());
-            userId.setText(account.getId());
-            try{
-                Glide.with(this).load(account.getPhotoUrl()).into(profileImage);
-            }catch (NullPointerException e){
-                Toast.makeText(getApplicationContext(),"image not found",Toast.LENGTH_LONG).show();
-            }
 
-        }else{
-            gotoMainActivity();
-        }
-    }
-    private void gotoMainActivity(){
-        Intent intent=new Intent(this,MainActivity.class);
-        startActivity(intent);
     }
 
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }
