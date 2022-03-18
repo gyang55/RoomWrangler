@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView_slidngTimeSlots_col1_morning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:gravity="center"
+        android:textColor="#004D40"
+        android:textSize="16sp"
+        android:background="@color/light_green">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/textView_slidngTimeSlots_col2_morning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="#004D40"
+        android:textSize="16sp"
+        android:background="@color/light_green"/>
+
+    <TextView
+        android:id="@+id/textView_slidngTimeSlots_col3_morning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="#004D40"
+        android:textSize="16sp"
+        android:background="@color/light_green"/>
+
+    <TextView
+        android:id="@+id/textView_slidngTimeSlots_col4_morning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="#004D40"
+        android:textSize="16sp"
+        android:background="@color/light_green"/>
+
+
+</LinearLayout>

@@ -11,9 +11,11 @@
         <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/drawable/textline.xml" value="0.347" />
         <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/activity_main.xml" value="0.3875" />
         <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/activity_main_page.xml" value="0.25" />
+        <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/activity_room_info.xml" value="0.17777777777777778" />
         <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/datepicker_peoplenum_alertdialog.xml" value="0.4" />
         <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/header_fragment.xml" value="0.37552083333333336" />
-        <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/item_room.xml" value="0.37552083333333336" />
+        <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/item_room.xml" value="0.25" />
+        <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/layout/sliding_time_slots.xml" value="0.20208333333333334" />
         <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/menu/menu_bottom_bar.xml" value="0.3875" />
         <entry key="..\:/BCIT/COMP3717/project-room-wrangler/app/src/main/res/menu/menu_bottomnav.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/evilm/AndroidStudioProjects/roomwrangler/app/src/main/res/layout/activity_main.xml" value="0.165625" />

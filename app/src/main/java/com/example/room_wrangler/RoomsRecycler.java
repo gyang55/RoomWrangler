@@ -1,5 +1,7 @@
 package com.example.room_wrangler;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RoomsRecycler extends RecyclerView.Adapter<RoomsRecycler.ViewHolder> {
 
     private Room[] localDataSet;
+    private Context context;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -31,7 +34,7 @@ public class RoomsRecycler extends RecyclerView.Adapter<RoomsRecycler.ViewHolder
             super(view);
 
             imageViewPic = view.findViewById(R.id.imageView_item_room);
-            roomNumber= view.findViewById(R.id.textView_item_room_room_number);
+            roomNumber = view.findViewById(R.id.textView_item_room_room_number);
             roomDescription = view.findViewById(R.id.textView_item_room_room_description);
             people = view.findViewById(R.id.textView_item_room_people);
             imageViewIcon = view.findViewById(R.id.imageView_item_icon);
@@ -64,8 +67,9 @@ public class RoomsRecycler extends RecyclerView.Adapter<RoomsRecycler.ViewHolder
      * @param dataSet String[] containing the data to populate views to be used
      *                by RecyclerView.
      */
-    public RoomsRecycler(Room[] dataSet) {
+    public RoomsRecycler(Room[] dataSet, Context context) {
         localDataSet = dataSet;
+        this.context = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -84,13 +88,21 @@ public class RoomsRecycler extends RecyclerView.Adapter<RoomsRecycler.ViewHolder
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-
+        Room room = localDataSet[position];
         viewHolder.getImageViewPic().setImageResource(localDataSet[position].getRoomPicture());
         String nameAndNumOfPeople = "<b>" + "Room " + localDataSet[position].getRoomNumber();
         viewHolder.getRoomNumber().setText(Html.fromHtml(nameAndNumOfPeople));
         viewHolder.getImageViewIcon().setImageResource(R.drawable.group_people_icon);
         viewHolder.getPeople().setText(localDataSet[position].getMaxNumOfPeople());
         viewHolder.getRoomDescription().setText(localDataSet[position].getRoomDesc());
+        viewHolder.getImageViewPic().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, RoomInfoActivity.class);
+                intent.putExtra("Room", room);
+                context.startActivity(intent);
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)

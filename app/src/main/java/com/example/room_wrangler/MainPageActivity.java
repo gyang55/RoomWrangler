@@ -16,8 +16,8 @@ import android.widget.DatePicker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainPageActivity extends AppCompatActivity {
-    protected static Room[] rooms = {new Room(R.drawable.study_room_1, 400, "4", true,
+public class MainPageActivity extends AppCompatActivity implements RecyclerPicListener {
+    protected static Room[] rooms = {new Room(R.drawable.study_room_2, 400, "4", true,
             true, "666", "Computer, 42 inch LCD Display, " +
             "Laptop Hookup, and Whiteboard"),
             new Room(R.drawable.study_room_2, 400, "4", true,
@@ -37,7 +37,7 @@ public class MainPageActivity extends AppCompatActivity {
 
     private void setUpRoomsRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView_mainPage_rooms);
-        RoomsRecycler roomsRecycler = new RoomsRecycler(rooms);
+        RoomsRecycler roomsRecycler = new RoomsRecycler(rooms, this);
         recyclerView.setAdapter(roomsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -55,7 +55,7 @@ public class MainPageActivity extends AppCompatActivity {
                     AlertDialog alertDialog = dialogBuilder.create();
                     alertDialog.show();
                     //System.out.println(datePicker.getDayOfMonth() + " /" + (datePicker.getMonth() + 1) + " /" + datePicker.getYear());
-                } else if(item.getTitle().equals("Account")) {
+                } else if (item.getTitle().equals("Account")) {
                     goToLoginPage();
                 }
                 return false;
@@ -69,4 +69,8 @@ public class MainPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onItemClicked(Room room) {
+
+    }
 }
