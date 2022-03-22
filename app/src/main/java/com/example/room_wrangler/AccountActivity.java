@@ -70,13 +70,10 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-        logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(AccountActivity.this, MainActivity.class));
-            }
+        logoutBtn.setOnClickListener(view -> {
+            firebaseAuth.signOut();
+            finish();
+            startActivity(new Intent(AccountActivity.this, MainActivity.class));
         });
     }
 }
