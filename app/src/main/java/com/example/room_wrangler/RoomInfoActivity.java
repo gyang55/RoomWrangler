@@ -1,33 +1,21 @@
 package com.example.room_wrangler;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class RoomInfoActivity extends AppCompatActivity {
@@ -40,7 +28,7 @@ public class RoomInfoActivity extends AppCompatActivity {
         Room room = (Room) intent.getExtras().get("Room");
         setUpRoom(room);
         setUpDate();
-        setUpSlidingTimeSLots();
+        setUpSlidingTimeSlots();
     }
 
     //Display pic and description
@@ -89,7 +77,7 @@ public class RoomInfoActivity extends AppCompatActivity {
         return year + "-" + month + "-" + day + " " + temp.getDayOfWeek();
     }
 
-    private void setUpSlidingTimeSLots() {
+    private void setUpSlidingTimeSlots() {
         ArrayList<ArrayList<String>> timeLabels = new ArrayList<>();
         ArrayList<String> morningLabels = new ArrayList<>();
         ArrayList<String> afternoonLabels = new ArrayList<>();
