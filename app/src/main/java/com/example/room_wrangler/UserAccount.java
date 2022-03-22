@@ -8,10 +8,7 @@ public class UserAccount {
     private String fName;
     private String studentId;
 
-
     //Must have the empty constructor
-
-
     public UserAccount(String email, String password, String fName, String studentId) {
         this.email = email;
         this.password = password;

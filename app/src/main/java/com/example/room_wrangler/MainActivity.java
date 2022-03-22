@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-
-
         goToMainPage();//Test main_page!!!
 
     }
@@ -53,6 +51,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainPageActivity.class);
         startActivity(intent);
     }
-
-
 }

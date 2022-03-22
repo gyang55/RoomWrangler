@@ -78,9 +78,5 @@ public class AccountActivity extends AppCompatActivity {
                 startActivity(new Intent(AccountActivity.this, MainActivity.class));
             }
         });
-
-
     }
-
-
 }
