@@ -24,13 +24,15 @@ public class AccountActivity extends AppCompatActivity {
     private TextView userName, userEmail, userStudentID;
     private ImageView profileImage;
     private Button gotoMainPage;
+
     private FirebaseDatabase database;
     private DatabaseReference userRef;
-    private FirebaseAuth firebaseAuth;
-    private static final String USERS = "user";
-    //    private ArrayList<RoomBooking>
-    String email;
     private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
+
+    //    private ArrayList<RoomBooking>
+    private String email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,6 @@ public class AccountActivity extends AppCompatActivity {
         userName = findViewById(R.id.TextView_fName_account);
         userEmail = findViewById(R.id.TextView_email_account);
         userStudentID = findViewById(R.id.TextView_studentId_account);
-        profileImage = findViewById(R.id.profileImage);
         gotoMainPage = findViewById(R.id.button_account_goto_mainPage);
         database = FirebaseDatabase.getInstance();
         userRef = database.getReference("Room Wrangler").child("user");
