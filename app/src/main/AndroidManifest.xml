@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Roomwrangler">
         <activity
-            android:name=".BookRoomActivity"
-            android:exported="false" />
-        <activity
             android:name=".RoomInfoActivity"
             android:exported="false" />
         <activity
