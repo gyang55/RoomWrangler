@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
-        goToMainPage();//Test main_page!!!
+//        goToMainPage();//Test main_page!!!
 
     }
 

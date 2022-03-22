@@ -36,10 +36,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-//        if(firebaseUser != null) {
-//            startActivity(new Intent(this, AccountActivity.class));
-//            finish();
-//        }
+        if(firebaseUser != null) {
+            startActivity(new Intent(this, AccountActivity.class));
+            finish();
+        }
 
         Button btn_login = findViewById(R.id.button_singIn_login);
 
