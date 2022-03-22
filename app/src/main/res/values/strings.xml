@@ -13,4 +13,5 @@
     <string name="_1">1</string>
     <string name="default_id">defalutID</string>
     <string name="go_to_mainpage">Go to MainPage</string>
+    <string name="button_book_room_text">Book Room</string>
 </resources>
