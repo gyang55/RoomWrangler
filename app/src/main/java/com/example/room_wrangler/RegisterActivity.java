@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-
 public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseFirestore db;
@@ -67,13 +66,15 @@ public class RegisterActivity extends AppCompatActivity {
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
 
-                           //Update UI
+                            //Update UI
                             FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                             UserAccount account = new UserAccount(strEmail, strPassword, strName, strStudentId);
                             assert firebaseUser != null;
                             account.setEmail(firebaseUser.getEmail());
+                            account.setfName(strName);
+                            account.setStudentId(strStudentId);
                             account.setPassword(strPassword);
                             account.setIdToken(firebaseUser.getUid());
                             mDatabase.child("user").child(firebaseUser.getUid()).setValue(account);
@@ -106,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        if (strPassword.length() < 6    ) {
+        if (strPassword.length() < 6) {
             userPassword.setError("Password Must be >= 6 Characters.");
             return;
         }

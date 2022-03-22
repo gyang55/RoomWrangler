@@ -33,17 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if(firebaseUser != null) {
-
+        if (firebaseUser != null) {
             goToMainPage();
-
-        }
-        else {
+        } else {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-        goToMainPage();//Test main_page!!!
-
     }
 
     //Test main_page!!!

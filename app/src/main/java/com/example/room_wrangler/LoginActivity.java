@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
 //        if(firebaseUser != null) {
 //            startActivity(new Intent(this, AccountActivity.class));
-//            finish();
+//            //finish();
 //        }
 
         Button btn_login = findViewById(R.id.button_singIn_login);
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

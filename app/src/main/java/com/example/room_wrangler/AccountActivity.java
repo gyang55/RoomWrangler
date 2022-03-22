@@ -23,28 +23,35 @@ public class AccountActivity extends AppCompatActivity {
     private Button logoutBtn;
     private TextView userName, userEmail, userStudentID;
     private ImageView profileImage;
-    private String strEmail, strName, strStudentId;
+    private Button gotoMainPage;
     private FirebaseDatabase database;
     private DatabaseReference userRef;
     private FirebaseAuth firebaseAuth;
     private static final String USERS = "user";
-//    private ArrayList<RoomBooking>
+    //    private ArrayList<RoomBooking>
     String email;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        Intent intent = getIntent();
-        email = intent.getStringExtra("email");
+        if (firebaseUser != null) {
+            email = firebaseUser.getEmail();
+        } else {
+            Intent intent = getIntent();
+            email = intent.getStringExtra("email");
+        }
 
         logoutBtn = findViewById(R.id.logoutBtn);
         userName = findViewById(R.id.TextView_fName_account);
         userEmail = findViewById(R.id.TextView_email_account);
         userStudentID = findViewById(R.id.TextView_studentId_account);
         profileImage = findViewById(R.id.profileImage);
-
+        gotoMainPage = findViewById(R.id.button_account_goto_mainPage);
         database = FirebaseDatabase.getInstance();
         userRef = database.getReference("Room Wrangler").child("user");
         Log.d("tag", "///user reference///" + userRef.getKey());
@@ -54,7 +61,7 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot ds: snapshot.getChildren()) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
 
                     if (email.equals(ds.child("email").getValue(String.class))) {
                         userName.setText(ds.child("fName").getValue(String.class));
@@ -73,7 +80,16 @@ public class AccountActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(view -> {
             firebaseAuth.signOut();
             finish();
-            startActivity(new Intent(AccountActivity.this, MainActivity.class));
+            startActivity(new Intent(AccountActivity.this, LoginActivity.class));
+        });
+
+        gotoMainPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountActivity.this, MainPageActivity.class));
+            }
         });
     }
+
+
 }

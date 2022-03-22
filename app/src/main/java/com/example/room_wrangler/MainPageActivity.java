@@ -56,7 +56,7 @@ public class MainPageActivity extends AppCompatActivity implements RecyclerPicLi
                     alertDialog.show();
                     //System.out.println(datePicker.getDayOfMonth() + " /" + (datePicker.getMonth() + 1) + " /" + datePicker.getYear());
                 } else if (item.getTitle().equals("Account")) {
-                    goToLoginPage();
+                    goToAccountPage();
                 }
                 return false;
             }
@@ -64,8 +64,8 @@ public class MainPageActivity extends AppCompatActivity implements RecyclerPicLi
     }
 
     //Test main_page!!!
-    private void goToLoginPage() {
-        Intent intent = new Intent(this, LoginActivity.class);
+    private void goToAccountPage() {
+        Intent intent = new Intent(this, AccountActivity.class);
         startActivity(intent);
     }
 
