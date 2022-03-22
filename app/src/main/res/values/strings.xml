@@ -14,4 +14,7 @@
     <string name="default_id">defalutID</string>
     <string name="go_to_mainpage">Go to MainPage</string>
     <string name="button_book_room_text">Book Room</string>
+    <string name="book_room_title">Book Room</string>
+    <string name="book_room_start_time">Start time:</string>
+    <string name="book_room_end_time">End time:</string>
 </resources>

@@ -114,8 +114,13 @@ public class RoomInfoActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showBookingMenu();
             }
         });
+    }
+
+    private void showBookingMenu() {
+        setContentView(R.layout.book_room_menu);
+
     }
 }
