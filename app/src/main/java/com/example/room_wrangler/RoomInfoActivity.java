@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,8 +14,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -121,6 +124,28 @@ public class RoomInfoActivity extends AppCompatActivity {
 
     private void showBookingMenu() {
         setContentView(R.layout.book_room_menu);
+        LocalTime now = LocalTime.now();
+        LocalTime start = now;
+        LocalTime end = now.plusHours(1);
+
+        TextView startTimeText = findViewById(R.id.book_room_start_time);
+        TextView endTimeText = findViewById(R.id.book_room_end_time);
+        startTimeText.setText(start.toString());
+        endTimeText.setText(end.toString());
+
+        startTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+                    }
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, start.getHour(), start.getMinute(), false);
+                timePickerDialog.show();
+            }
+        });
 
     }
 }
