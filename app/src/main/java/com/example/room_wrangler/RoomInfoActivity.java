@@ -125,13 +125,13 @@ public class RoomInfoActivity extends AppCompatActivity {
     private void showBookingMenu() {
         setContentView(R.layout.book_room_menu);
         LocalTime now = LocalTime.now();
-        LocalTime start = now;
-        LocalTime end = now.plusHours(1);
+        final LocalTime[] start = {now};
+        final LocalTime[] end = {now.plusHours(1)};
 
         TextView startTimeText = findViewById(R.id.book_room_start_time);
         TextView endTimeText = findViewById(R.id.book_room_end_time);
-        startTimeText.setText(start.toString());
-        endTimeText.setText(end.toString());
+        startTimeText.setText(start[0].toString());
+        endTimeText.setText(end[0].toString());
 
         startTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,10 +139,26 @@ public class RoomInfoActivity extends AppCompatActivity {
                 TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
-
+                        start[0] = LocalTime.of(i, i1);
+                        startTimeText.setText(start[0].toString());
                     }
                 };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, start.getHour(), start.getMinute(), false);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, start[0].getHour(), start[0].getMinute(), false);
+                timePickerDialog.show();
+            }
+        });
+
+        endTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        end[0] = LocalTime.of(i, i1);
+                        endTimeText.setText(end[0].toString());
+                    }
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, end[0].getHour(), end[0].getMinute(), false);
                 timePickerDialog.show();
             }
         });
