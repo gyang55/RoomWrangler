@@ -130,6 +130,8 @@ public class RoomInfoActivity extends AppCompatActivity {
 
         TextView startTimeText = findViewById(R.id.book_room_start_time);
         TextView endTimeText = findViewById(R.id.book_room_end_time);
+        Button button = findViewById(R.id.button_book_room);
+
         startTimeText.setText(start[0].toString());
         endTimeText.setText(end[0].toString());
 
@@ -160,6 +162,13 @@ public class RoomInfoActivity extends AppCompatActivity {
                 };
                 TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, end[0].getHour(), end[0].getMinute(), false);
                 timePickerDialog.show();
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
