@@ -188,7 +188,7 @@ public class RoomInfoActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Log.d("Debug", "DocumentSnapshot added with ID: " + documentReference.getId());
-                                setContentView(R.layout.activity_room_info);
+                                finish();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
