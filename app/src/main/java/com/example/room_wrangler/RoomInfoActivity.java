@@ -141,11 +141,13 @@ public class RoomInfoActivity extends AppCompatActivity {
         final LocalTime[] start = {now};
         final LocalTime[] end = {now.plusHours(1)};
 
+        TextView titleText = findViewById(R.id.textView_book_room_title);
         TextView startTimeText = findViewById(R.id.book_room_start_time);
         TextView endTimeText = findViewById(R.id.book_room_end_time);
         Button button = findViewById(R.id.button_book_room_submit);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
+        titleText.setText("Book room " + room.getRoomNumber());
         startTimeText.setText(start[0].format(formatter));
         endTimeText.setText(end[0].format(formatter));
 
