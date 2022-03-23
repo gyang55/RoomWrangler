@@ -1,30 +1,37 @@
 package com.example.room_wrangler;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.time.LocalTime;
 
 /**
  * Booking details for rooms. The room object itself stores a list of bookings.
  */
-public class RoomBooking {
-    private final LocalDateTime startTime;
-    private final LocalDateTime endTime;
-    private final User owner;
+public class RoomBooking implements Serializable {
+    private final String startTime;
+    private final String endTime;
+    private final String room;
+//    private final User owner;
 
-    public RoomBooking(LocalDateTime startTime, LocalDateTime endTime, User owner) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.owner = owner;
+    public RoomBooking(LocalTime startTime, LocalTime endTime, Room room) {
+        this.startTime = startTime.toString();
+        this.endTime = endTime.toString();
+        this.room = room.getRoomNumber();
+//        this.owner = owner;
     }
 
-    public LocalDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public LocalDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public User getOwner() {
-        return owner;
+    public String getRoom() {
+        return room;
     }
+
+    //    public User getOwner() {
+//        return owner;
+//    }
 }

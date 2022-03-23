@@ -1,36 +1,52 @@
 package com.example.room_wrangler;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 
 public class RoomInfoActivity extends AppCompatActivity {
 
+    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = FirebaseFirestore.getInstance();
+
         setContentView(R.layout.activity_room_info);
         Intent intent = getIntent();
         Room room = (Room) intent.getExtras().get("Room");
         setUpRoom(room);
         setUpDate();
         setUpSlidingTimeSlots();
-        setUpBookingButton();
+        setUpBookingButton(room);
     }
 
     //Display pic and description
@@ -109,18 +125,84 @@ public class RoomInfoActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    private void setUpBookingButton() {
+    private void setUpBookingButton(Room room) {
         Button button = findViewById(R.id.button_book_room);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBookingMenu();
+                showBookingMenu(room);
             }
         });
     }
 
-    private void showBookingMenu() {
+    private void showBookingMenu(Room room) {
         setContentView(R.layout.book_room_menu);
+        LocalTime now = LocalTime.now();
+        final LocalTime[] start = {now};
+        final LocalTime[] end = {now.plusHours(1)};
+
+        TextView titleText = findViewById(R.id.textView_book_room_title);
+        TextView startTimeText = findViewById(R.id.book_room_start_time);
+        TextView endTimeText = findViewById(R.id.book_room_end_time);
+        Button button = findViewById(R.id.button_book_room_submit);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        titleText.setText("Book room " + room.getRoomNumber());
+        startTimeText.setText(start[0].format(formatter));
+        endTimeText.setText(end[0].format(formatter));
+
+        startTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        start[0] = LocalTime.of(i, i1);
+                        startTimeText.setText(start[0].format(formatter));
+                    }
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, start[0].getHour(), start[0].getMinute(), false);
+                timePickerDialog.show();
+            }
+        });
+
+        endTimeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        end[0] = LocalTime.of(i, i1);
+                        endTimeText.setText(end[0].format(formatter));
+                    }
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, end[0].getHour(), end[0].getMinute(), false);
+                timePickerDialog.show();
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Need to add validation checking: start time before end time, etc
+                RoomBooking booking = new RoomBooking(start[0], end[0], room);
+                db.collection("bookings")
+                        .add(booking)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d("Debug", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                finish();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("Debug", "Error adding document", e);
+                            }
+                        });
+            }
+        });
 
     }
 }
