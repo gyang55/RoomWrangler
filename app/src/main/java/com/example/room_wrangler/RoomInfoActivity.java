@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -143,9 +144,10 @@ public class RoomInfoActivity extends AppCompatActivity {
         TextView startTimeText = findViewById(R.id.book_room_start_time);
         TextView endTimeText = findViewById(R.id.book_room_end_time);
         Button button = findViewById(R.id.button_book_room_submit);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        startTimeText.setText(start[0].toString());
-        endTimeText.setText(end[0].toString());
+        startTimeText.setText(start[0].format(formatter));
+        endTimeText.setText(end[0].format(formatter));
 
         startTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +156,7 @@ public class RoomInfoActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                         start[0] = LocalTime.of(i, i1);
-                        startTimeText.setText(start[0].toString());
+                        startTimeText.setText(start[0].format(formatter));
                     }
                 };
                 TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, start[0].getHour(), start[0].getMinute(), false);
@@ -169,7 +171,7 @@ public class RoomInfoActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                         end[0] = LocalTime.of(i, i1);
-                        endTimeText.setText(end[0].toString());
+                        endTimeText.setText(end[0].format(formatter));
                     }
                 };
                 TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, end[0].getHour(), end[0].getMinute(), false);
