@@ -27,7 +27,6 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     private EditText userEmail, userPassword, userName, userStudentId;
-    private String Uid;
     private Button buttonRegister;
 
     private static final String TAG = "RegisterActivity";
