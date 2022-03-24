@@ -22,6 +22,14 @@ public class RoomBooking implements Serializable {
         this.owner = owner;
     }
 
+    public RoomBooking(String date, String startTime, String endTime, String room, String owner) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.room = room;
+        this.owner = owner;
+    }
+
     public String getEndTime() {
         return endTime;
     }
