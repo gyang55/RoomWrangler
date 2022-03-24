@@ -20,6 +20,10 @@ import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,6 +37,8 @@ import java.util.Calendar;
 public class RoomInfoActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private FirebaseUser firebaseUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +157,10 @@ public class RoomInfoActivity extends AppCompatActivity {
         startTimeText.setText(start[0].format(formatter));
         endTimeText.setText(end[0].format(formatter));
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert firebaseUser != null;
+        String userId = firebaseUser.getUid();
+
         startTimeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,7 +195,7 @@ public class RoomInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Need to add validation checking: start time before end time, etc
-                RoomBooking booking = new RoomBooking(start[0], end[0], room);
+                RoomBooking booking = new RoomBooking(start[0], end[0], room, userId);
                 db.collection("bookings")
                         .add(booking)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

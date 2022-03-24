@@ -10,13 +10,13 @@ public class RoomBooking implements Serializable {
     private final String startTime;
     private final String endTime;
     private final String room;
-//    private final User owner;
+    private final String owner;
 
-    public RoomBooking(LocalTime startTime, LocalTime endTime, Room room) {
+    public RoomBooking(LocalTime startTime, LocalTime endTime, Room room, String owner) {
         this.startTime = startTime.toString();
         this.endTime = endTime.toString();
         this.room = room.getRoomNumber();
-//        this.owner = owner;
+        this.owner = owner;
     }
 
     public String getEndTime() {
