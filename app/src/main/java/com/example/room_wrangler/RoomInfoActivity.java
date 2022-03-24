@@ -144,18 +144,22 @@ public class RoomInfoActivity extends AppCompatActivity {
     private void showBookingMenu(Room room) {
         setContentView(R.layout.book_room_menu);
         LocalTime now = LocalTime.now();
+        LocalDate today = LocalDate.now();
         final LocalTime[] start = {now};
         final LocalTime[] end = {now.plusHours(1)};
+        final LocalDate[] date = {today};
 
         TextView titleText = findViewById(R.id.textView_book_room_title);
         TextView startTimeText = findViewById(R.id.book_room_start_time);
         TextView endTimeText = findViewById(R.id.book_room_end_time);
+        TextView dateText = findViewById(R.id.book_room_date);
         Button button = findViewById(R.id.button_book_room_submit);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
         titleText.setText("Book room " + room.getRoomNumber());
         startTimeText.setText(start[0].format(formatter));
         endTimeText.setText(end[0].format(formatter));
+        dateText.setText(today.toString());
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert firebaseUser != null;
@@ -191,11 +195,26 @@ public class RoomInfoActivity extends AppCompatActivity {
             }
         });
 
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        date[0] = LocalDate.of(i, i1 + 1, i2);
+                        dateText.setText(date[0].toString());
+                    }
+                };
+                DatePickerDialog datePickerDialog = new DatePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, date[0].getYear(), date[0].getMonthValue() - 1, date[0].getDayOfMonth());
+                datePickerDialog.show();
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Need to add validation checking: start time before end time, etc
-                RoomBooking booking = new RoomBooking(start[0], end[0], room, userId);
+                RoomBooking booking = new RoomBooking(date[0], start[0], end[0], room, userId);
                 db.collection("bookings")
                         .add(booking)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

@@ -18,4 +18,5 @@
     <string name="book_room_start_time">Start time:</string>
     <string name="book_room_end_time">End time:</string>
     <string name="button_submit_text">Submit</string>
+    <string name="book_room_date">Date:</string>
 </resources>
