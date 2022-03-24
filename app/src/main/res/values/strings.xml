@@ -19,4 +19,20 @@
     <string name="book_room_end_time">End time:</string>
     <string name="button_submit_text">Submit</string>
     <string name="book_room_date">Date:</string>
+    <string name="date">date</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="amentities">Amentities:</string>
+    <string name="string_amentities">amentities</string>
+    <string name="seatnum">seatNum</string>
+    <string name="roomsize">roomsize</string>
+    <string name="string_roomicon" />
+    <string name="seaticon">seatIcon</string>
+    <string name="tvicon">TVIcon</string>
+    <string name="tv">tv</string>
+    <string name="whiteboard">whiteboard</string>
+    <string name="book_room">Book Room</string>
+    <string name="textview">TextView</string>
+    <string name="string_bookings" />
+    <string name="bookings">Bookings:</string>
 </resources>

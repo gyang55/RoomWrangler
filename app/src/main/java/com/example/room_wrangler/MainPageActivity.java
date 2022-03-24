@@ -16,15 +16,15 @@ import android.widget.DatePicker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainPageActivity extends AppCompatActivity implements RecyclerPicListener {
+public class MainPageActivity extends AppCompatActivity {
     protected static Room[] rooms = {new Room(R.drawable.study_room_1, 400, "4", true,
             true, "666", "Computer, 42 inch LCD Display, " +
             "Laptop Hookup, and Whiteboard"),
-            new Room(R.drawable.study_room_2, 400, "4", true,
+            new Room(R.drawable.study_room_2, 400, "4", false,
                     true, "667", "Computer, 42 inch LCD Display, " +
                     "Laptop Hookup, and Whiteboard"),
             new Room(R.drawable.study_room_3, 500, "6", true,
-                    true, "668", "Computer, 80 inch LCD Display, Laptop " +
+                    false, "668", "Computer, 80 inch LCD Display, Laptop " +
                     "Hookup, and Whiteboard")};
 
     @Override
@@ -63,14 +63,11 @@ public class MainPageActivity extends AppCompatActivity implements RecyclerPicLi
         });
     }
 
-    //Test main_page!!!
+    //Go to account page
     private void goToAccountPage() {
         Intent intent = new Intent(this, AccountActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    public void onItemClicked(Room room) {
 
-    }
 }

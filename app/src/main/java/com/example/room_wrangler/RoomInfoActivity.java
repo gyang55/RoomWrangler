@@ -1,58 +1,75 @@
 package com.example.room_wrangler;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.TimePicker;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 
 
 public class RoomInfoActivity extends AppCompatActivity {
-
     private FirebaseFirestore db;
-    private FirebaseUser firebaseUser;
-
+    private Room room;
+    private TextView date;
+    private SlidingTimeSlots slidingTimeSlots;
+    private ArrayList<String> timeSlots = new ArrayList<>();
+    private String chosenDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         db = FirebaseFirestore.getInstance();
-
         setContentView(R.layout.activity_room_info);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+        String formattedDate = LocalDate.now().format(dateTimeFormatter);
+        chosenDate = formattedDate + " " + LocalDate.now().getDayOfWeek();
+
         Intent intent = getIntent();
-        Room room = (Room) intent.getExtras().get("Room");
+        room = (Room) intent.getExtras().get("Room");
         setUpRoom(room);
         setUpDate();
         setUpSlidingTimeSlots();
-        setUpBookingButton(room);
+        setUpBookingButton();
     }
 
     //Display pic and description
@@ -65,12 +82,14 @@ public class RoomInfoActivity extends AppCompatActivity {
         imageViewIcon.setImageResource(R.drawable.group_people_icon);
         roomNumber.setText("Room " + room.getRoomNumber());
         peopleNum.setText(room.getMaxNumOfPeople());
+        showRoomAmenities();
+
     }
 
     //SetUp date and add listener to it
     private void setUpDate() {
         LocalDate today = LocalDate.now();
-        TextView date = findViewById(R.id.textView_roomInfo_date);
+        date = findViewById(R.id.textView_roomInfo_date);
         date.setText(today.toString() + " " + today.getDayOfWeek());
 
         date.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +106,8 @@ public class RoomInfoActivity extends AppCompatActivity {
                         month += 1;
                         String dateString = makeDateString(day, month, year);
                         date.setText(dateString);
+                        chosenDate = dateString;
+                        greyOutBookedTimeSlots();
                     }
                 };
                 DatePickerDialog datePickerDialog = new DatePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
@@ -124,114 +145,80 @@ public class RoomInfoActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.recyclerView_roomInfo);
-        SlidingTimeSlots slidingTimeSlots = new SlidingTimeSlots(this, timeLabels);
+        slidingTimeSlots = new SlidingTimeSlots(this, timeLabels, new TimeSlotsOnClick());
         recyclerView.setAdapter(slidingTimeSlots);
         LinearSnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(layoutManager);
+        greyOutBookedTimeSlots();
     }
 
-    private void setUpBookingButton(Room room) {
+    private void showRoomAmenities() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView_roomInfo, AmenitiesFragment.newInstance(room));
+        fragmentTransaction.commit();
+    }
+
+    private void setUpBookingButton() {
         Button button = findViewById(R.id.button_book_room);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBookingMenu(room);
+                Intent intent = new Intent(RoomInfoActivity.this, DisplayBookingsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("date", chosenDate);
+                bundle.putString("roomNumber", room.getRoomNumber());
+                bundle.putStringArrayList("timeslots", timeSlots);
+                intent.putExtra("Room", room);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }
 
-    private void showBookingMenu(Room room) {
-        setContentView(R.layout.book_room_menu);
-        LocalTime now = LocalTime.now();
-        LocalDate today = LocalDate.now();
-        final LocalTime[] start = {now};
-        final LocalTime[] end = {now.plusHours(1)};
-        final LocalDate[] date = {today};
-
-        TextView titleText = findViewById(R.id.textView_book_room_title);
-        TextView startTimeText = findViewById(R.id.book_room_start_time);
-        TextView endTimeText = findViewById(R.id.book_room_end_time);
-        TextView dateText = findViewById(R.id.book_room_date);
-        Button button = findViewById(R.id.button_book_room_submit);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        titleText.setText("Book room " + room.getRoomNumber());
-        startTimeText.setText(start[0].format(formatter));
-        endTimeText.setText(end[0].format(formatter));
-        dateText.setText(today.toString());
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        assert firebaseUser != null;
-        String userId = firebaseUser.getUid();
-
-        startTimeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+    private void greyOutBookedTimeSlots() {
+        db.collection("bookings")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                        start[0] = LocalTime.of(i, i1);
-                        startTimeText.setText(start[0].format(formatter));
-                    }
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, start[0].getHour(), start[0].getMinute(), false);
-                timePickerDialog.show();
-            }
-        });
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Debug", document.getData().toString());
+                                if (document.get("date").equals(chosenDate) && document.get("roomNumber").equals(room.getRoomNumber())) {
+                                    List<String> group = (List<String>) document.get("duration");
+                                    System.out.println(group);
+                                    for (String timeslot : group
+                                    ) {
+                                        for (String slot : timeSlots
+                                        ) {
+                                            if (slot.equals(timeslot)) {
 
-        endTimeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                        end[0] = LocalTime.of(i, i1);
-                        endTimeText.setText(end[0].format(formatter));
-                    }
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, timeSetListener, end[0].getHour(), end[0].getMinute(), false);
-                timePickerDialog.show();
-            }
-        });
-
-        dateText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        date[0] = LocalDate.of(i, i1 + 1, i2);
-                        dateText.setText(date[0].toString());
-                    }
-                };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, date[0].getYear(), date[0].getMonthValue() - 1, date[0].getDayOfMonth());
-                datePickerDialog.show();
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Need to add validation checking: start time before end time, etc
-                RoomBooking booking = new RoomBooking(date[0], start[0], end[0], room, userId);
-                db.collection("bookings")
-                        .add(booking)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d("Debug", "DocumentSnapshot added with ID: " + documentReference.getId());
-                                finish();
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("Debug", "Error adding document", e);
-                            }
-                        });
-            }
-        });
+                        }
+                    }
+                });
+    }
 
+    /**
+     * Recyclerview listener to get chosen time slots
+     */
+    class TimeSlotsOnClick implements RecyclerPicListener {
+        @Override
+        public void onItemClicked(TextView textView) {
+            ColorDrawable timeslotColor = (ColorDrawable) textView.getBackground();
+            int currentColor = timeslotColor.getColor();
+            if (currentColor == getResources().getColor(R.color.light_green)) {
+                textView.setBackgroundResource(R.color.light_grey);
+                String duration = textView.getText().toString();
+                timeSlots.add(duration);
+            } else {
+                textView.setBackgroundResource(R.color.light_green);
+            }
+        }
     }
 }

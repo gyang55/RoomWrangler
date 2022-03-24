@@ -81,7 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="date"
+        android:text="@string/date"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -92,12 +92,17 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_roomInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/button_book_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
-        android:text="Book Room" />
+        android:text="@string/book_room" />
 
 </LinearLayout>

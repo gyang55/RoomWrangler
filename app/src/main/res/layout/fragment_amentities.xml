@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AmentitiesFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/textview_amentities"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginStart="20dp"
+        android:gravity="center_vertical"
+        android:text="@string/string_amentities"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout_amenities_roomSize"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_amenities_roomSize"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/string_roomicon"
+            tools:ignore="ImageContrastCheck"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textView_amenities_roomSize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="@string/roomsize"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_amenities_seat"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_amenities_seat"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/seaticon"
+            tools:ignore="ImageContrastCheck"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textView_amenities_seat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="@string/seatnum"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_amenities_TV"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_amenities_TV"
+            android:layout_width="96dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/tvicon"
+            tools:ignore="ImageContrastCheck"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textView_amenities_TV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="@string/tv"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_amenities_whiteboard"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView_amenities_whiteboard"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/tvicon"
+            tools:ignore="ImageContrastCheck"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textView_amenities_whiteboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="@string/whiteboard"
+            android:textSize="20sp" />
+    </LinearLayout>
+</LinearLayout>

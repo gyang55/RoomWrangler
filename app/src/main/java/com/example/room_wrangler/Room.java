@@ -8,13 +8,11 @@ public class Room implements Serializable {
 
     private final int roomPicture;
     private final int roomSize;
-
     private final boolean hasTV;
     private final boolean hasWhiteboard;
     private final String maxNumOfPeople;
     private final String roomNumber;
     private final String roomDesc;
-    private RoomBooking[] bookings;
 
     public Room(int roomPicture, int roomSize, String maxNumOfPeople, boolean hasTV, boolean hasWhiteboard, String roomNumber, String roomDesc) {
         this.roomPicture = roomPicture;
