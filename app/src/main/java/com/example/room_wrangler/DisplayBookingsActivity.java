@@ -53,7 +53,6 @@ public class DisplayBookingsActivity extends AppCompatActivity {
         RoomBooking booking = new RoomBooking(chosenDate, timeSlots, room, userId);
         setUpDisplayTimeSlots(booking.getDuration());
         Button button = findViewById(R.id.button_book_room_submit);
-
         button.setOnClickListener(view -> {
             for (String slot : booking.getDuration()
             ) {
@@ -64,12 +63,12 @@ public class DisplayBookingsActivity extends AppCompatActivity {
                         if (result.exists()) {
                             db.collection("bookings").document(result.getId()).
                                     update("duration", FieldValue.arrayUnion(slot))
-                                    .addOnSuccessListener(documentReference -> finish())
+                                    .addOnSuccessListener(
+                                            documentReference -> finish())
                                     .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));
                         } else {
                             db.collection("bookings")
                                     .document(booking.getDate().concat(" ").concat(booking.getRoomNumber()))
-
                                     .set(booking)
                                     .addOnSuccessListener(documentReference -> finish())
                                     .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));

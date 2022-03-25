@@ -54,9 +54,14 @@ public class RoomInfoActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        greyOutBookedTimeSlots();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-
         greyOutBookedTimeSlots();
         timeSlots.clear();
     }
@@ -160,10 +165,10 @@ public class RoomInfoActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("Debug", document.getData().toString());
-                            if (Objects.requireNonNull(document.get("date")).equals(chosenDate) && Objects.equals(document.get("roomNumber"), room.getRoomNumber())) {
+                            if (document.get("date").equals(chosenDate) && document.get("roomNumber").equals(room.getRoomNumber())) {
                                 ArrayList<String> group = (ArrayList<String>) document.get("duration");
                                 setUpSlidingTimeSlots(group);
+                                break;
                             } else {
                                 setUpSlidingTimeSlots(new ArrayList<>());
                             }
@@ -187,6 +192,9 @@ public class RoomInfoActivity extends AppCompatActivity {
             } else if (currentColor == getResources().getColor(R.color.teal_200)) {
                 textView.setBackgroundResource(R.color.teal_200);
             } else {
+                if (timeSlots.contains(textView.getText().toString())) {
+                    timeSlots.remove(textView.getText().toString());
+                }
                 textView.setBackgroundResource(R.color.light_green);
             }
         }
