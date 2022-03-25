@@ -63,6 +63,12 @@ public class RoomInfoActivity extends AppCompatActivity {
         greyOutBookedTimeSlots();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        greyOutBookedTimeSlots();
+    }
+
     //Display pic and description
     private void setUpRoom(Room room) {
         ImageView imageViewPic = findViewById(R.id.imageView_roomInfo_pic);

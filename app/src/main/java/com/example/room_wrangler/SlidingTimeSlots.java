@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.ViewHolder> {
 
     Context context;
-    private ArrayList<ArrayList<String>> localDataSet;
+    private final ArrayList<ArrayList<String>> localDataSet;
     public RecyclerPicListener recyclerPicListener;
-    private ArrayList<String> bookedTimeSlots;
+    private final ArrayList<String> bookedTimeSlots;
 
 
     /**
@@ -31,6 +32,7 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
 
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
@@ -61,30 +63,10 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
         TextView col4 = viewHolder.getCol4();
         col4.setText(localDataSet.get(position).get(3));
 
-        col1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerPicListener.onItemClicked(col1);
-            }
-        });
-        col2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerPicListener.onItemClicked(col2);
-            }
-        });
-        col3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerPicListener.onItemClicked(col3);
-            }
-        });
-        col4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerPicListener.onItemClicked(col4);
-            }
-        });
+        col1.setOnClickListener(view -> recyclerPicListener.onItemClicked(col1));
+        col2.setOnClickListener(view -> recyclerPicListener.onItemClicked(col2));
+        col3.setOnClickListener(view -> recyclerPicListener.onItemClicked(col3));
+        col4.setOnClickListener(view -> recyclerPicListener.onItemClicked(col4));
 
 
         if (bookedTimeSlots.size() != 0) {
@@ -110,10 +92,10 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
      * This template comes with a TextView
      */
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView col1;
-        private TextView col2;
-        private TextView col3;
-        private TextView col4;
+        private final TextView col1;
+        private final TextView col2;
+        private final TextView col3;
+        private final TextView col4;
 
 
         public ViewHolder(View view) {
@@ -149,17 +131,17 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
 
     private void setBookedTimeSlotToGrey(int index, TextView col1, TextView col2, TextView col3, TextView col4) {
         switch (index) {
+            case 0:
+                col1.setBackgroundResource(R.color.teal_200);
+                break;
             case 1:
-                col1.setBackgroundResource(R.color.black);
+                col2.setBackgroundResource(R.color.teal_200);
                 break;
             case 2:
-                col2.setBackgroundResource(R.color.black);
+                col3.setBackgroundResource(R.color.teal_200);
                 break;
             case 3:
-                col3.setBackgroundResource(R.color.black);
-                break;
-            case 4:
-                col4.setBackgroundResource(R.color.black);
+                col4.setBackgroundResource(R.color.teal_200);
                 break;
         }
     }
