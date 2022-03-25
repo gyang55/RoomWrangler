@@ -10,18 +10,23 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+
 
 public class DisplayBookingsActivity extends AppCompatActivity {
     private Room room;
     private String chosenDate;
     private ArrayList<String> timeSlots;
     private FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +55,28 @@ public class DisplayBookingsActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button_book_room_submit);
 
         button.setOnClickListener(view -> {
-            // Need to add validation checking: start time before end time, etc
-            db.collection("bookings")
-                    .add(booking)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d("Debug", "DocumentSnapshot added with ID: " + documentReference.getId());
-                        finish();
-                    })
-                    .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));
+            for (String slot : booking.getDuration()
+            ) {
+                db.collection("bookings").document(booking.getDate()
+                        .concat(" ").concat(booking.getRoomNumber())).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot result = task.getResult();
+                        if (result.exists()) {
+                            db.collection("bookings").document(result.getId()).
+                                    update("duration", FieldValue.arrayUnion(slot))
+                                    .addOnSuccessListener(documentReference -> finish())
+                                    .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));
+                        } else {
+                            db.collection("bookings")
+                                    .document(booking.getDate().concat(" ").concat(booking.getRoomNumber()))
+
+                                    .set(booking)
+                                    .addOnSuccessListener(documentReference -> finish())
+                                    .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));
+                        }
+                    }
+                });
+            }
         });
 
     }

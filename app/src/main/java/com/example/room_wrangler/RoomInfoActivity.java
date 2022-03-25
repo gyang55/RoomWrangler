@@ -3,7 +3,6 @@ package com.example.room_wrangler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
@@ -15,34 +14,25 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import android.util.Log;
-
-
-import com.google.android.gms.tasks.OnCompleteListener;
-
-import com.google.android.gms.tasks.Task;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 
 public class RoomInfoActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private Room room;
     private TextView date;
-    private SlidingTimeSlots slidingTimeSlots;
-    private ArrayList<String> timeSlots = new ArrayList<>();
+
+    private final ArrayList<String> timeSlots = new ArrayList<>();
     private String chosenDate;
 
     @Override
@@ -66,7 +56,9 @@ public class RoomInfoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         greyOutBookedTimeSlots();
+        timeSlots.clear();
     }
 
     //Display pic and description
@@ -77,7 +69,8 @@ public class RoomInfoActivity extends AppCompatActivity {
         TextView peopleNum = findViewById(R.id.textView_roomInfo_room_people);
         imageViewPic.setImageResource(room.getRoomPicture());
         imageViewIcon.setImageResource(R.drawable.group_people_icon);
-        roomNumber.setText("Room " + room.getRoomNumber());
+        String roomNum = "Room".concat(" ").concat(room.getRoomNumber());
+        roomNumber.setText(roomNum);
         peopleNum.setText(room.getMaxNumOfPeople());
         showRoomAmenities();
 
@@ -87,29 +80,24 @@ public class RoomInfoActivity extends AppCompatActivity {
     private void setUpDate() {
         LocalDate today = LocalDate.now();
         date = findViewById(R.id.textView_roomInfo_date);
-        date.setText(today.toString() + " " + today.getDayOfWeek());
+        String dateWithDay = today.toString() + " " + today.getDayOfWeek();
+        date.setText(dateWithDay);
 
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
+        date.setOnClickListener(view -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        month += 1;
-                        String dateString = makeDateString(day, month, year);
-                        date.setText(dateString);
-                        chosenDate = dateString;
-                        greyOutBookedTimeSlots();
-                    }
-                };
-                DatePickerDialog datePickerDialog = new DatePickerDialog(RoomInfoActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
-                datePickerDialog.show();
-            }
+            DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year1, month1, day1) -> {
+                month1 += 1;
+                String dateString = makeDateString(day1, month1, year1);
+                date.setText(dateString);
+                chosenDate = dateString;
+                greyOutBookedTimeSlots();
+            };
+            DatePickerDialog datePickerDialog = new DatePickerDialog(RoomInfoActivity.this, android.R.style.Theme_DeviceDefault_Dialog, dateSetListener, year, month, day);
+            datePickerDialog.show();
         });
     }
 
@@ -141,7 +129,7 @@ public class RoomInfoActivity extends AppCompatActivity {
         timeLabels.add(nightLabels);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.recyclerView_roomInfo);
-        slidingTimeSlots = new SlidingTimeSlots(this, timeLabels, new TimeSlotsOnClick(), bookedTimeSlots);
+        SlidingTimeSlots slidingTimeSlots = new SlidingTimeSlots(this, timeLabels, new TimeSlotsOnClick(), bookedTimeSlots);
         recyclerView.setAdapter(slidingTimeSlots);
         recyclerView.setLayoutManager(layoutManager);
     }
@@ -154,34 +142,28 @@ public class RoomInfoActivity extends AppCompatActivity {
 
     private void setUpBookingButton() {
         Button button = findViewById(R.id.button_book_room);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RoomInfoActivity.this, DisplayBookingsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("date", chosenDate);
-                bundle.putString("roomNumber", room.getRoomNumber());
-                bundle.putStringArrayList("timeslots", timeSlots);
-                intent.putExtra("Room", room);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+        button.setOnClickListener(view -> {
+            Intent intent = new Intent(RoomInfoActivity.this, DisplayBookingsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("date", chosenDate);
+            bundle.putString("roomNumber", room.getRoomNumber());
+            bundle.putStringArrayList("timeslots", timeSlots);
+            intent.putExtra("Room", room);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
     }
 
     private void greyOutBookedTimeSlots() {
         db.collection("bookings")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Debug", document.getData().toString());
-                                if (document.get("date").equals(chosenDate) && document.get("roomNumber").equals(room.getRoomNumber())) {
-                                    ArrayList<String> group = (ArrayList<String>) document.get("duration");
-                                    setUpSlidingTimeSlots(group);
-                                }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("Debug", document.getData().toString());
+                            if (Objects.requireNonNull(document.get("date")).equals(chosenDate) && Objects.equals(document.get("roomNumber"), room.getRoomNumber())) {
+                                ArrayList<String> group = (ArrayList<String>) document.get("duration");
+                                setUpSlidingTimeSlots(group);
                             }
                         }
                     }
@@ -200,6 +182,8 @@ public class RoomInfoActivity extends AppCompatActivity {
                 textView.setBackgroundResource(R.color.light_grey);
                 String duration = textView.getText().toString();
                 timeSlots.add(duration);
+            } else if (currentColor == getResources().getColor(R.color.teal_200)) {
+                textView.setBackgroundResource(R.color.teal_200);
             } else {
                 textView.setBackgroundResource(R.color.light_green);
             }
