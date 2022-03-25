@@ -16,15 +16,17 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
     Context context;
     private ArrayList<ArrayList<String>> localDataSet;
     public RecyclerPicListener recyclerPicListener;
+    private ArrayList<String> bookedTimeSlots;
 
 
     /**
      * Initialize the dataset of the Adapter.
      */
-    public SlidingTimeSlots(Context context, ArrayList<ArrayList<String>> data, RecyclerPicListener recyclerPicListener) {
+    public SlidingTimeSlots(Context context, ArrayList<ArrayList<String>> data, RecyclerPicListener recyclerPicListener, ArrayList<String> bookedTimeSlots) {
         this.localDataSet = data;
         this.context = context;
         this.recyclerPicListener = recyclerPicListener;
+        this.bookedTimeSlots = bookedTimeSlots;
     }
 
 
@@ -84,6 +86,17 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
             }
         });
 
+
+        if (bookedTimeSlots.size() != 0) {
+            for (String booked : bookedTimeSlots
+            ) {
+                if (localDataSet.get(position).contains(booked)) {
+                    int index = localDataSet.get(position).indexOf(booked);
+                    setBookedTimeSlotToGrey(index, col1, col2, col3, col4);
+                }
+            }
+        }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -132,5 +145,22 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
             return col4;
         }
 
+    }
+
+    private void setBookedTimeSlotToGrey(int index, TextView col1, TextView col2, TextView col3, TextView col4) {
+        switch (index) {
+            case 1:
+                col1.setBackgroundResource(R.color.black);
+                break;
+            case 2:
+                col2.setBackgroundResource(R.color.black);
+                break;
+            case 3:
+                col3.setBackgroundResource(R.color.black);
+                break;
+            case 4:
+                col4.setBackgroundResource(R.color.black);
+                break;
+        }
     }
 }

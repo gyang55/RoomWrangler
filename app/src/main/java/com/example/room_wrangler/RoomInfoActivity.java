@@ -11,8 +11,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,25 +24,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.TimePicker;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 
 public class RoomInfoActivity extends AppCompatActivity {
@@ -68,8 +58,9 @@ public class RoomInfoActivity extends AppCompatActivity {
         room = (Room) intent.getExtras().get("Room");
         setUpRoom(room);
         setUpDate();
-        setUpSlidingTimeSlots();
         setUpBookingButton();
+        setUpSlidingTimeSlots(new ArrayList<>());
+        greyOutBookedTimeSlots();
     }
 
     //Display pic and description
@@ -122,7 +113,7 @@ public class RoomInfoActivity extends AppCompatActivity {
         return year + "-" + month + "-" + day + " " + temp.getDayOfWeek();
     }
 
-    private void setUpSlidingTimeSlots() {
+    private void setUpSlidingTimeSlots(ArrayList<String> bookedTimeSlots) {
         ArrayList<ArrayList<String>> timeLabels = new ArrayList<>();
         ArrayList<String> morningLabels = new ArrayList<>();
         ArrayList<String> afternoonLabels = new ArrayList<>();
@@ -142,15 +133,11 @@ public class RoomInfoActivity extends AppCompatActivity {
         timeLabels.add(morningLabels);
         timeLabels.add(afternoonLabels);
         timeLabels.add(nightLabels);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = findViewById(R.id.recyclerView_roomInfo);
-        slidingTimeSlots = new SlidingTimeSlots(this, timeLabels, new TimeSlotsOnClick());
+        slidingTimeSlots = new SlidingTimeSlots(this, timeLabels, new TimeSlotsOnClick(), bookedTimeSlots);
         recyclerView.setAdapter(slidingTimeSlots);
-        LinearSnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(layoutManager);
-        greyOutBookedTimeSlots();
     }
 
     private void showRoomAmenities() {
@@ -186,17 +173,8 @@ public class RoomInfoActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Debug", document.getData().toString());
                                 if (document.get("date").equals(chosenDate) && document.get("roomNumber").equals(room.getRoomNumber())) {
-                                    List<String> group = (List<String>) document.get("duration");
-                                    System.out.println(group);
-                                    for (String timeslot : group
-                                    ) {
-                                        for (String slot : timeSlots
-                                        ) {
-                                            if (slot.equals(timeslot)) {
-
-                                            }
-                                        }
-                                    }
+                                    ArrayList<String> group = (ArrayList<String>) document.get("duration");
+                                    setUpSlidingTimeSlots(group);
                                 }
                             }
                         }
