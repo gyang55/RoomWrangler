@@ -164,6 +164,8 @@ public class RoomInfoActivity extends AppCompatActivity {
                             if (Objects.requireNonNull(document.get("date")).equals(chosenDate) && Objects.equals(document.get("roomNumber"), room.getRoomNumber())) {
                                 ArrayList<String> group = (ArrayList<String>) document.get("duration");
                                 setUpSlidingTimeSlots(group);
+                            } else {
+                                setUpSlidingTimeSlots(new ArrayList<>());
                             }
                         }
                     }
