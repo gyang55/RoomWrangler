@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        goToMainPage();
+    }
+
     //Test main_page!!!
     private void goToMainPage() {
         Intent intent = new Intent(this, MainPageActivity.class);

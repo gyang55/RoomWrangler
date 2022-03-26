@@ -3,12 +3,14 @@ package com.example.room_wrangler;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,8 +20,13 @@ import android.widget.DatePicker;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainPageActivity extends AppCompatActivity {
     protected static Room[] rooms = {new Room(R.drawable.study_room_1, 400, "4", true,
@@ -31,7 +38,9 @@ public class MainPageActivity extends AppCompatActivity {
             new Room(R.drawable.study_room_3, 500, "6", true,
                     false, "668", "Computer, 80 inch LCD Display, Laptop " +
                     "Hookup, and Whiteboard")};
-    private String chosenDate;
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+    String formattedDate = LocalDate.now().format(dateTimeFormatter);
+    private String chosenDate = formattedDate + " " + LocalDate.now().getDayOfWeek();
     private int peopleNum;
 
     @Override
@@ -77,6 +86,25 @@ public class MainPageActivity extends AppCompatActivity {
                     Button button5 = datePickerAndPeopleNumView.findViewById(R.id.button_datepicker_peoplenum_5);
                     Button button6 = datePickerAndPeopleNumView.findViewById(R.id.button_datepicker_peoplenum_6);
                     button1.setOnClickListener(new AlertDialogButtonListener(button1, button2, button3, button4, button5, button6));
+                    button2.setOnClickListener(new AlertDialogButtonListener(button2, button1, button3, button4, button5, button6));
+                    button3.setOnClickListener(new AlertDialogButtonListener(button3, button2, button1, button4, button5, button6));
+                    button4.setOnClickListener(new AlertDialogButtonListener(button4, button2, button3, button1, button5, button6));
+                    button5.setOnClickListener(new AlertDialogButtonListener(button5, button2, button3, button4, button1, button6));
+                    button6.setOnClickListener(new AlertDialogButtonListener(button6, button2, button3, button4, button5, button1));
+
+                    Button check = datePickerAndPeopleNumView.findViewById(R.id.button_datepicker_check);
+                    check.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            RecyclerView recyclerView = findViewById(R.id.recyclerView_mainPage_rooms);
+                            ArrayList<Room> roomsArrayList = new ArrayList<>(Arrays.asList(rooms));
+                            SortedRoomAdapter roomsRecycler = new SortedRoomAdapter(roomsArrayList, chosenDate, peopleNum, MainPageActivity.this);
+                            recyclerView.setAdapter(roomsRecycler);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(MainPageActivity.this));
+                            alertDialog.dismiss();
+
+                        }
+                    });
                 } else if (item.getTitle().equals("Account")) {
                     goToAccountPage();
                 }
@@ -116,23 +144,13 @@ public class MainPageActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            ColorDrawable timeslotColor = (ColorDrawable) current.getBackground();
-            int currentColor = timeslotColor.getColor();
-            if (currentColor == getResources().getColor(R.color.light_grey)) {
-                current.setBackgroundResource(R.color.light_green);
-                peopleNum = Integer.parseInt(String.valueOf(current.getText()));
-                System.out.println(peopleNum);
-                other1.setBackgroundResource(R.color.light_grey);
-                other2.setBackgroundResource(R.color.light_grey);
-                other3.setBackgroundResource(R.color.light_grey);
-                other4.setBackgroundResource(R.color.light_grey);
-                other5.setBackgroundResource(R.color.light_grey);
-            }
-
+            DrawableCompat.setTint(DrawableCompat.wrap(current.getBackground()), getResources().getColor(R.color.green));
+            peopleNum = Integer.parseInt(String.valueOf(current.getText()));
+            DrawableCompat.setTint(DrawableCompat.wrap(other1.getBackground()), getResources().getColor(R.color.light_grey));
+            DrawableCompat.setTint(DrawableCompat.wrap(other2.getBackground()), getResources().getColor(R.color.light_grey));
+            DrawableCompat.setTint(DrawableCompat.wrap(other3.getBackground()), getResources().getColor(R.color.light_grey));
+            DrawableCompat.setTint(DrawableCompat.wrap(other4.getBackground()), getResources().getColor(R.color.light_grey));
+            DrawableCompat.setTint(DrawableCompat.wrap(other5.getBackground()), getResources().getColor(R.color.light_grey));
         }
-    }
-
-    public void onClick(View view, Button button1, Button button2, Button button3, Button button4, Button button5, Button button6) {
-        ColorDrawable timeslotColor = (ColorDrawable) button1.getBackground();
     }
 }
