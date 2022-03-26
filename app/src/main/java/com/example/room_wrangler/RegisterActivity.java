@@ -58,8 +58,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String strName = userName.getText().toString();
                 String strStudentId = userStudentId.getText().toString();
 
-                isBlank(strEmail, strPassword, strName, strStudentId);
-
+                if (isBlank(strEmail, strPassword, strName, strStudentId)) {
+                    return;
+                }
 
                 //firebase auth
                 mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
@@ -95,31 +96,33 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void isBlank(String strEmail, String strPassword, String strName, String strStudentId) {
+    private Boolean isBlank(String strEmail, String strPassword, String strName, String strStudentId) {
         if (TextUtils.isEmpty(strEmail)) {
             userEmail.setError("Email is required.");
-            return;
+            return true;
         }
 
         if (TextUtils.isEmpty(strPassword)) {
             userPassword.setError("Password is required.");
-            return;
+            return true;
         }
 
         if (strPassword.length() < 6) {
             userPassword.setError("Password Must be >= 6 Characters.");
-            return;
+            return true;
         }
 
         if (TextUtils.isEmpty(strName)) {
             userName.setError("Name is required.");
-            return;
+            return true;
         }
 
         if (TextUtils.isEmpty(strStudentId)) {
             userStudentId.setError("Student ID is required.");
-            return;
+            return true;
         }
+
+        return false;
 
     }
 
