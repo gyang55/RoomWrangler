@@ -50,6 +50,11 @@ public class LoginActivity extends AppCompatActivity {
                 String strEmail = userEmail.getText().toString();
                 String strPassword = userPassword.getText().toString();
 
+                if (strEmail.equals("") || strPassword.equals("")) {
+                    Toast.makeText(getBaseContext(), "Please fill in all fields!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
