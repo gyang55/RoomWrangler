@@ -32,18 +32,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (firebaseUser != null) {
-            goToMainPage();
-        } else {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        goToMainPage();
+        if (firebaseUser != null) {
+            goToMainPage();
+        } else {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 
     //Test main_page!!!
