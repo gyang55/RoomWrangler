@@ -5,30 +5,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.core.FirestoreClient;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +28,9 @@ public class ReservationFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
-    private Room mParam1;
+    private RoomBooking[] mParam1;
 //    private String mParam2;
 
     public ReservationFragment() {
@@ -54,25 +41,26 @@ public class ReservationFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment ReservationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReservationFragment newInstance(String param1, String param2) {
+    public static ReservationFragment newInstance(RoomBooking mParam1) {
         ReservationFragment fragment = new ReservationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PARAM1, mParam1);
+
         fragment.setArguments(args);
         return fragment;
     }
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = (Room) getArguments().getSerializable(ARG_PARAM1);
+            mParam1 = (RoomBooking[]) getArguments().getSerializable(ARG_PARAM1);
 
         }
     }
@@ -81,47 +69,58 @@ public class ReservationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reservation, container, false);
+        View view = inflater.inflate(R.layout.fragment_reservation, container, false);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_reservation);
+        ReservationAdapter reservationAdapter = new ReservationAdapter(mParam1);
+        recyclerView.setAdapter(reservationAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        return view;
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String owner;
-
-        FirebaseDatabase database;
-        FirebaseFirestore db;
-        DatabaseReference userRef;
-        FirebaseUser firebaseUser;
-        FirebaseAuth firebaseAuth;
-        RoomBooking roomBooking;
-
-        //get database info
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        assert firebaseUser != null;
-        owner = firebaseUser.getUid();
-        db = FirebaseFirestore.getInstance();
-
-        CollectionReference bookings = db.collection("bookings");
-        Query query = bookings.whereEqualTo("owner", owner);
 
 
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                String roomNumber, date;
-                ArrayList<String> duration;
 
-                for (QueryDocumentSnapshot documents: task.getResult()) {
-                   RoomBooking roomBooking = documents.toObject(RoomBooking.class);
-                   roomNumber = roomBooking.getRoomNumber();
-                   setCard(view, roomNumber, roomBooking);
 
-                }
-            }
-        });
+//        String owner;
+//
+//        FirebaseDatabase database;
+//        FirebaseFirestore db;
+//        DatabaseReference userRef;
+//        FirebaseUser firebaseUser;
+//        FirebaseAuth firebaseAuth;
+//        RoomBooking roomBooking;
+//
+//        //get database info
+//
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        assert firebaseUser != null;
+//        owner = firebaseUser.getUid();
+//        db = FirebaseFirestore.getInstance();
+//
+//        CollectionReference bookings = db.collection("bookings");
+//        Query query = bookings.whereEqualTo("owner", owner);
+//
+//
+//        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                String roomNumber, date;
+//                ArrayList<String> duration;
+//
+//                for (QueryDocumentSnapshot documents: task.getResult()) {
+//                   RoomBooking roomBooking = documents.toObject(RoomBooking.class);
+//                   roomNumber = roomBooking.getRoomNumber();
+//                   setCard(view, roomNumber, roomBooking);
+//
+//                }
+//            }
+//        });
 
 
 
@@ -156,4 +155,7 @@ public class ReservationFragment extends Fragment {
         tvDuration.setText(roomBooking.getDuration().toString());
 
     }
+
+
+
 }
