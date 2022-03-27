@@ -79,6 +79,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        if (localDataSet == null) {
+            return 0;
+        }
         return localDataSet.length;
     }
 }
