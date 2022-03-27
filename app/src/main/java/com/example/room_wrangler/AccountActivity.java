@@ -27,7 +27,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AccountActivity extends AppCompatActivity {
     private Button logoutBtn;
@@ -43,7 +45,10 @@ public class AccountActivity extends AppCompatActivity {
 
     //    private ArrayList<RoomBooking>
     private String email, owner;
-    private RoomBooking roomBooking;
+
+//    private ArrayList<RoomBooking> bookingArrayList;
+
+
 
 
     @Override
@@ -52,6 +57,7 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         if (firebaseUser != null) {
             email = firebaseUser.getEmail();
@@ -112,25 +118,35 @@ public class AccountActivity extends AppCompatActivity {
         owner = firebaseUser.getUid();
         db = FirebaseFirestore.getInstance();
 
+
         CollectionReference bookings = db.collection("bookings");
         Query query = bookings.whereEqualTo("owner", owner);
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ArrayList<RoomBooking> bookingArrayList = new ArrayList<>();
                 for (QueryDocumentSnapshot documents: task.getResult()) {
-                    roomBooking = documents.toObject(RoomBooking.class);
-
+                    RoomBooking roomBooking= documents.toObject(RoomBooking.class);
+                    bookingArrayList.add(roomBooking);
+                    Log.d("TAG", documents.getId() + " => " + documents.getData());
                 }
+                showUpcomingReservation(bookingArrayList);
             }
+
         });
 
-        showUpcomingReservation();
+
     }
 
-    private void showUpcomingReservation() {
+    private void showUpcomingReservation(ArrayList<RoomBooking> bookingArrayList) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView_account, ReservationFragment.newInstance(roomBooking));
+        RoomBooking[] bookingList = new RoomBooking[bookingArrayList.size()];
+        for(int i = 0; i < bookingArrayList.size(); i++) {
+            bookingList[i] = bookingArrayList.get(i);
+        }
+
+        fragmentTransaction.replace(R.id.fragmentContainerView_account, ReservationFragment.newInstance(bookingList));
         fragmentTransaction.commit();
     }
 

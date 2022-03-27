@@ -44,7 +44,7 @@ public class ReservationFragment extends Fragment {
      * @return A new instance of fragment ReservationFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReservationFragment newInstance(RoomBooking mParam1) {
+    public static ReservationFragment newInstance(RoomBooking[] mParam1) {
         ReservationFragment fragment = new ReservationFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, mParam1);
@@ -84,77 +84,8 @@ public class ReservationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-
-
-//        String owner;
-//
-//        FirebaseDatabase database;
-//        FirebaseFirestore db;
-//        DatabaseReference userRef;
-//        FirebaseUser firebaseUser;
-//        FirebaseAuth firebaseAuth;
-//        RoomBooking roomBooking;
-//
-//        //get database info
-//
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        assert firebaseUser != null;
-//        owner = firebaseUser.getUid();
-//        db = FirebaseFirestore.getInstance();
-//
-//        CollectionReference bookings = db.collection("bookings");
-//        Query query = bookings.whereEqualTo("owner", owner);
-//
-//
-//        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                String roomNumber, date;
-//                ArrayList<String> duration;
-//
-//                for (QueryDocumentSnapshot documents: task.getResult()) {
-//                   RoomBooking roomBooking = documents.toObject(RoomBooking.class);
-//                   roomNumber = roomBooking.getRoomNumber();
-//                   setCard(view, roomNumber, roomBooking);
-//
-//                }
-//            }
-//        });
-
-
-
-//        roomImage.setImageDrawable(getResources().getDrawable(R.d));
-
     }
-    public void setCard(View view, String roomNumber, RoomBooking roomBooking) {
-        ImageView roomImage;
-        TextView tvPeople, tvDate, tvDuration;
 
-        if (roomNumber.equals("666")) {
-            roomImage = view.findViewById(R.id.imageView_room_reservation_card);
-            roomImage.setImageDrawable(getResources().getDrawable(R.drawable.study_room_1));
-            tvPeople = view.findViewById(R.id.textView_people_reservation_card);
-            tvPeople.setText("4");
-        } else if (roomNumber.equals("667")) {
-            roomImage = view.findViewById(R.id.imageView_room_reservation_card);
-            roomImage.setImageDrawable(getResources().getDrawable(R.drawable.study_room_2));
-            tvPeople = view.findViewById(R.id.textView_people_reservation_card);
-            tvPeople.setText("4");
-        } else {
-            roomImage = view.findViewById(R.id.imageView_room_reservation_card);
-            roomImage.setImageDrawable(getResources().getDrawable(R.drawable.study_room_3));
-            tvPeople = view.findViewById(R.id.textView_people_reservation_card);
-            tvPeople.setText("6");
-        }
-
-        tvDate = view.findViewById(R.id.textView_date_reservation_card);
-        tvDate.setText(roomBooking.getDate());
-
-        tvDuration = view.findViewById(R.id.textView_duration_reservation_card);
-        tvDuration.setText(roomBooking.getDuration().toString());
-
-    }
 
 
 

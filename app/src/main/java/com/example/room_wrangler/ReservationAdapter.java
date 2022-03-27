@@ -63,16 +63,16 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         roomNumber = localDataSet[position].getRoomNumber();
         if (roomNumber.equals("666")) {
             viewHolder.getPeople().setText("4");
-            viewHolder.roomImage.setImageResource(R.drawable.study_room_1);
+//            viewHolder.roomImage.setImageResource(R.drawable.study_room_1);
         } else if (roomNumber.equals("667")) {
             viewHolder.getPeople().setText("4");
-            viewHolder.roomImage.setImageResource(R.drawable.study_room_2);
+//            viewHolder.roomImage.setImageResource(R.drawable.study_room_2);
         } else {
             viewHolder.getPeople().setText("6");
-            viewHolder.roomImage.setImageResource(R.drawable.study_room_3);
+//            viewHolder.roomImage.setImageResource(R.drawable.study_room_3);
         }
         viewHolder.getDate().setText(localDataSet[position].getDate());
-        viewHolder.getTvDuration().setText((CharSequence) localDataSet[position].getDuration());
+//        viewHolder.getTvDuration().setText((CharSequence) localDataSet[position].getDuration());
 
     }
 

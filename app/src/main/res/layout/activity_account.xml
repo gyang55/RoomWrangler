@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".AccountActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView_hi_account"
@@ -39,13 +39,13 @@
             android:id="@+id/logoutBtn"
             android:layout_width="wrap_content"
             android:layout_height="33dp"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="43dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginBottom="38dp"
+            android:layout_marginBottom="44dp"
             android:backgroundTint="#000000"
             android:text="Logout"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/button_account_goto_mainPage"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_profile_account"
             app:layout_constraintEnd_toEndOf="@+id/button_account_goto_mainPage"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TouchTargetSizeCheck" />
@@ -53,16 +53,16 @@
         <Button
             android:id="@+id/button_account_goto_mainPage"
             android:layout_width="139dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="43dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="29dp"
-            android:layout_marginBottom="43dp"
+            android:layout_marginBottom="4dp"
             android:backgroundTint="#000000"
             android:text="@string/go_to_mainpage"
             android:textSize="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/TextView_email_account"
+            app:layout_constraintBottom_toBottomOf="@+id/textView_profile_account"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView_agreeting_account"
+            app:layout_constraintTop_toBottomOf="@+id/logoutBtn"
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
@@ -70,13 +70,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
-            android:layout_marginBottom="65dp"
+            android:layout_marginTop="66dp"
             android:fontFamily="@font/oxygen_light"
             android:text="Upcoming Reservation"
             android:textColor="#000000"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/imageView" />
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/textView_emailPl_account" />
 
         <TextView
             android:id="@+id/textView_agreeting_account"
@@ -94,13 +94,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="31dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="28dp"
             android:fontFamily="@font/oxygen_light"
             android:text="Profile"
             android:textColor="#000000"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView_studentPl_account"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_hi_account" />
 
         <TextView
             android:id="@+id/textView_studentPl_account"
@@ -118,7 +118,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="3dp"
             android:fontFamily="@font/oxygen_light"
             android:text="id"
             android:textSize="16sp"
@@ -129,12 +129,12 @@
             android:id="@+id/TextView_email_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
             android:fontFamily="@font/oxygen_light"
             android:text="email"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView_emailPl_account"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_profile_account" />
 
         <TextView
             android:id="@+id/textView_emailPl_account"
@@ -151,9 +151,9 @@
             android:layout_width="0dp"
             android:layout_height="19dp"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="53dp"
             android:layout_marginEnd="14dp"
-            android:layout_marginBottom="45dp"
+            android:layout_marginBottom="47dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView_upcoming_account"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -166,9 +166,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="89dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="66dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView_upcoming_account" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
