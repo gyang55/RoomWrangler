@@ -54,8 +54,7 @@ public class DisplayBookingsActivity extends AppCompatActivity {
         setUpDisplayTimeSlots(booking.getDuration());
         Button button = findViewById(R.id.button_book_room_submit);
         button.setOnClickListener(view -> {
-            for (String slot : booking.getDuration()
-            ) {
+            for (String slot : booking.getDuration()) {
                 String docRef = booking.getDate().concat(" ").concat(booking.getRoomNumber()).concat(" ").concat(booking.getOwner());
                 db.collection("bookings")
                         .document(docRef)
