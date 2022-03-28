@@ -68,7 +68,7 @@ public class DisplayBookingsActivity extends AppCompatActivity {
                                     .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));
                         } else {
                             db.collection("bookings")
-                                    .document(booking.getDate().concat(" ").concat(booking.getRoomNumber()))
+                                    .document(booking.getDate().concat(" ").concat(booking.getRoomNumber()).concat(" ").concat(booking.getOwner()))
                                     .set(booking)
                                     .addOnSuccessListener(documentReference -> finish())
                                     .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));

@@ -120,9 +120,9 @@ public class AccountActivity extends AppCompatActivity {
         owner = firebaseUser.getUid();
         db = FirebaseFirestore.getInstance();
 
-
         CollectionReference bookings = db.collection("bookings");
         Query query = bookings.whereEqualTo("owner", owner);
+
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
