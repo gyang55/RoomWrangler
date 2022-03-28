@@ -36,8 +36,8 @@
 
     <ImageView
         android:id="@+id/imageView_roomInfo_pic"
-        android:layout_width="400dp"
-        android:layout_height="160dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/room_pic"
         tools:ignore="ImageContrastCheck"
@@ -46,8 +46,7 @@
     <LinearLayout
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
@@ -56,8 +55,8 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/alata"
+            android:textSize="20sp" />
 
         <ImageView
             android:id="@+id/imageView_roomInfo_icon"
@@ -72,18 +71,18 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="8"
-            android:gravity="start|center_vertical"
-            android:textStyle="bold" />
+            android:fontFamily="@font/alata"
+            android:gravity="start|center_vertical" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView_roomInfo_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/alata"
         android:text="@string/date"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textSize="16sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_roomInfo"
@@ -102,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="@string/book_room" />
 
 </LinearLayout>

@@ -12,9 +12,9 @@
         android:layout_height="290dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:contentDescription="@string/room_pic"
         tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
@@ -30,7 +30,7 @@
             android:id="@+id/textView_roomNumber_reservation_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/oxygen_light"
+            android:fontFamily="@font/alata"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -47,10 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
-            android:fontFamily="@font/oxygen_light"
+            android:fontFamily="@font/alata"
             android:gravity="start|center_vertical"
             android:textColor="#000000"
             android:textStyle="bold" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -73,7 +74,16 @@
             android:id="@+id/textView_date_reservation_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/oxygen_light"
+            android:fontFamily="@font/alata"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView_totalTme_reservation_card"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/alata"
+            android:gravity="start|center_vertical"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -84,6 +94,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:fontFamily="@font/oxygen_light"
+        android:fontFamily="@font/alata"
         android:textSize="16sp" />
 </LinearLayout>

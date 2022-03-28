@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder> {
 
-    private RoomBooking[] localDataSet;
-    private String roomNumber, date, duration;
+    private final RoomBooking[] localDataSet;
 
 
     /**
@@ -21,26 +23,27 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView roomImage, peopleIcon, timeIcon;
-        TextView roomNumber,tvPeople, tvDate, tvDuration;
+        TextView roomNumber, People, date, duration, totalTime;
 
 
         public ViewHolder(View view) {
             super(view);
 
             roomNumber = view.findViewById(R.id.textView_roomNumber_reservation_card);
-            tvPeople= view.findViewById(R.id.textView_people_reservation_card);
-            tvDate= view.findViewById(R.id.textView_date_reservation_card);
-            tvPeople= view.findViewById(R.id.textView_people_reservation_card);
-            tvDuration = view.findViewById(R.id.textView_duration_reservation_card);
+            People = view.findViewById(R.id.textView_people_reservation_card);
+            date = view.findViewById(R.id.textView_date_reservation_card);
+            People = view.findViewById(R.id.textView_people_reservation_card);
+            duration = view.findViewById(R.id.textView_duration_reservation_card);
+            totalTime = view.findViewById(R.id.textView_totalTme_reservation_card);
             peopleIcon = view.findViewById(R.id.imageView_people_reservation_card);
             roomImage = view.findViewById(R.id.imageView_room_reservation_card);
             timeIcon = view.findViewById(R.id.imageView_time_reservation_card);
             //error here should be expected, this is a template
         }
 
-        public TextView getPeople() { return tvPeople;}
-        public TextView getDate() {return tvDate;}
-        public TextView getTvDuration() {return tvDuration;}
+        public TextView getPeople() { return People;}
+        public TextView getDate() {return date;}
+        public TextView getDuration() {return duration;}
         public ImageView getRoomImage() {return roomImage;}
         public TextView getRoomNumber() {return roomNumber;}
     }
@@ -55,10 +58,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.localDataSet = dataSet;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.reservation_card, viewGroup, false); //error here should be expected, this is a template
 
@@ -67,9 +68,12 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        roomNumber = localDataSet[position].getRoomNumber();
+        String roomNumber = localDataSet[position].getRoomNumber();
         String date = localDataSet[position].getDate();
+        String strTotalTime;
         ImageView roomImage = viewHolder.getRoomImage();
+
+
         if (roomNumber.equals("666")) {
             viewHolder.roomNumber.setText("Room 666 ");
             viewHolder.getPeople().setText("4");
@@ -84,28 +88,43 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             roomImage.setImageResource(R.drawable.study_room_3);
         }
 
+        ArrayList<String> duration = localDataSet[position].getDuration();
+
+        strTotalTime = getTotalBookingTime(duration);
+
         viewHolder.peopleIcon.setImageResource(R.drawable.group_people_icon);
-        viewHolder.tvDate.setText(date);
+        viewHolder.totalTime.setText(strTotalTime);
+        viewHolder.date.setText(date);
+
+        //duration ArrayList handling
         StringBuilder durations = new StringBuilder();
         String strDuration;
-        for (String s: localDataSet[position].getDuration()) {
+        for (String s: duration) {
             if (durations.length() > 0) {
-                durations.append(" ");
+                durations.append(" / ");
             }
             durations.append(s);
-
         }
         strDuration = durations.toString();
-        viewHolder.tvDuration.setText(strDuration);
+        viewHolder.duration.setText(strDuration);
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         if (localDataSet == null) {
             return 0;
         }
         return localDataSet.length;
+    }
+
+    private String getTotalBookingTime(ArrayList<String> duration) {
+        int totalTime = duration.size();
+        StringBuilder totalTimeString = new StringBuilder();
+        String timeNumber = Integer.toString(totalTime);
+        totalTimeString.append(timeNumber);
+        totalTimeString.append(" hrs");
+
+        return totalTimeString.toString();
     }
 }
