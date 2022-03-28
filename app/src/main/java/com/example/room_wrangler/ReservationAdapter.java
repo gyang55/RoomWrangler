@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder> {
 
     private RoomBooking[] localDataSet;
-    private String roomNumber;
+    private String roomNumber, date, duration;
 
 
     /**
@@ -20,22 +20,29 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
      * This template comes with a TextView
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView roomImage;
-        TextView tvPeople, tvDate, tvDuration;
+        ImageView roomImage, peopleIcon, timeIcon;
+        TextView roomNumber,tvPeople, tvDate, tvDuration;
 
 
         public ViewHolder(View view) {
             super(view);
 
+            roomNumber = view.findViewById(R.id.textView_roomNumber_reservation_card);
             tvPeople= view.findViewById(R.id.textView_people_reservation_card);
             tvDate= view.findViewById(R.id.textView_date_reservation_card);
             tvPeople= view.findViewById(R.id.textView_people_reservation_card);
+            tvDuration = view.findViewById(R.id.textView_duration_reservation_card);
+            peopleIcon = view.findViewById(R.id.imageView_people_reservation_card);
+            roomImage = view.findViewById(R.id.imageView_room_reservation_card);
+            timeIcon = view.findViewById(R.id.imageView_time_reservation_card);
             //error here should be expected, this is a template
         }
 
         public TextView getPeople() { return tvPeople;}
         public TextView getDate() {return tvDate;}
         public TextView getTvDuration() {return tvDuration;}
+        public ImageView getRoomImage() {return roomImage;}
+        public TextView getRoomNumber() {return roomNumber;}
     }
 
     /**
@@ -61,18 +68,35 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         roomNumber = localDataSet[position].getRoomNumber();
+        String date = localDataSet[position].getDate();
+        ImageView roomImage = viewHolder.getRoomImage();
         if (roomNumber.equals("666")) {
+            viewHolder.roomNumber.setText("Room 666 ");
             viewHolder.getPeople().setText("4");
-//            viewHolder.roomImage.setImageResource(R.drawable.study_room_1);
+            roomImage.setImageResource(R.drawable.study_room_1);
         } else if (roomNumber.equals("667")) {
             viewHolder.getPeople().setText("4");
-//            viewHolder.roomImage.setImageResource(R.drawable.study_room_2);
+            viewHolder.roomNumber.setText("Room 667 ");
+            roomImage.setImageResource(R.drawable.study_room_2);
         } else {
             viewHolder.getPeople().setText("6");
-//            viewHolder.roomImage.setImageResource(R.drawable.study_room_3);
+            viewHolder.roomNumber.setText("Room 668 ");
+            roomImage.setImageResource(R.drawable.study_room_3);
         }
-        viewHolder.getDate().setText(localDataSet[position].getDate());
-//        viewHolder.getTvDuration().setText((CharSequence) localDataSet[position].getDuration());
+
+        viewHolder.peopleIcon.setImageResource(R.drawable.group_people_icon);
+        viewHolder.tvDate.setText(date);
+        StringBuilder durations = new StringBuilder();
+        String strDuration;
+        for (String s: localDataSet[position].getDuration()) {
+            if (durations.length() > 0) {
+                durations.append(" ");
+            }
+            durations.append(s);
+
+        }
+        strDuration = durations.toString();
+        viewHolder.tvDuration.setText(strDuration);
 
     }
 

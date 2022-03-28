@@ -3,6 +3,8 @@ package com.example.room_wrangler;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -139,16 +141,17 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
+
     private void showUpcomingReservation(ArrayList<RoomBooking> bookingArrayList) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_account);
         RoomBooking[] bookingList = new RoomBooking[bookingArrayList.size()];
         for(int i = 0; i < bookingArrayList.size(); i++) {
             bookingList[i] = bookingArrayList.get(i);
         }
-
-        fragmentTransaction.replace(R.id.fragmentContainerView_account, ReservationFragment.newInstance(bookingList));
-        fragmentTransaction.commit();
+        ReservationAdapter reservationAdapter = new ReservationAdapter(bookingList);
+        recyclerView.setAdapter(reservationAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
-
 
 }
