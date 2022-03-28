@@ -56,19 +56,21 @@ public class DisplayBookingsActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             for (String slot : booking.getDuration()
             ) {
-                db.collection("bookings").document(booking.getDate()
-                        .concat(" ").concat(booking.getRoomNumber())).get().addOnCompleteListener(task -> {
+                String docRef = booking.getDate().concat(" ").concat(booking.getRoomNumber()).concat(" ").concat(booking.getOwner());
+                db.collection("bookings")
+                        .document(docRef)
+                        .get()
+                        .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot result = task.getResult();
                         if (result.exists()) {
-                            db.collection("bookings").document(result.getId()).
-                                    update("duration", FieldValue.arrayUnion(slot))
-                                    .addOnSuccessListener(
-                                            documentReference -> finish())
+                            db.collection("bookings").document(result.getId())
+                                    .update("duration", FieldValue.arrayUnion(slot))
+                                    .addOnSuccessListener(documentReference -> finish())
                                     .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));
                         } else {
                             db.collection("bookings")
-                                    .document(booking.getDate().concat(" ").concat(booking.getRoomNumber()).concat(" ").concat(booking.getOwner()))
+                                    .document(docRef)
                                     .set(booking)
                                     .addOnSuccessListener(documentReference -> finish())
                                     .addOnFailureListener(e -> Log.w("Debug", "Error adding document", e));
