@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -161,17 +163,16 @@ public class RoomInfoActivity extends AppCompatActivity {
 
     private void greyOutBookedTimeSlots() {
         db.collection("bookings")
-                .get()
+                .document(chosenDate.concat(" ").concat(room.getRoomNumber()).
+                        concat(" " + FirebaseAuth.getInstance().getCurrentUser().getUid())).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (document.get("date").equals(chosenDate) && document.get("roomNumber").equals(room.getRoomNumber())) {
-                                ArrayList<String> group = (ArrayList<String>) document.get("duration");
-                                setUpSlidingTimeSlots(group);
-                                break;
-                            } else {
-                                setUpSlidingTimeSlots(new ArrayList<>());
-                            }
+                        DocumentSnapshot result = task.getResult();
+                        if (result.exists()) {
+                            ArrayList<String> group = (ArrayList<String>) result.get("duration");
+                            setUpSlidingTimeSlots(group);
+                        } else {
+                            setUpSlidingTimeSlots(new ArrayList<>());
                         }
                     }
                 });

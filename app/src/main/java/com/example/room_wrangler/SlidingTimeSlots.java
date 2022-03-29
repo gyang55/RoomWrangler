@@ -68,15 +68,11 @@ public class SlidingTimeSlots extends RecyclerView.Adapter<SlidingTimeSlots.View
         col3.setOnClickListener(view -> recyclerPicListener.onItemClicked(col3));
         col4.setOnClickListener(view -> recyclerPicListener.onItemClicked(col4));
 
-        System.out.println(bookedTimeSlots.size());
         if (bookedTimeSlots.size() != 0) {
-            System.out.println("11111111111111111111111111111" );
             for (String booked : bookedTimeSlots
             ) {
                 if (localDataSet.get(position).contains(booked)) {
                     int index = localDataSet.get(position).indexOf(booked);
-                    System.out.println("11111111111111111111111111111" + index);
-
                     setBookedTimeSlotToGrey(index, col1, col2, col3, col4);
                 }
             }
