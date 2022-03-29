@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -109,7 +110,7 @@ public class SortedRoomAdapter extends RecyclerView.Adapter<SortedRoomAdapter.Vi
 
         if (Integer.parseInt(room.getMaxNumOfPeople()) >= peopleNum) {
             FirebaseFirestore.getInstance().collection("bookings").document(choseDate
-                    .concat(" ").concat(room.getRoomNumber())).get().addOnCompleteListener(task -> {
+                    .concat(" ").concat(room.getRoomNumber()).concat(" " + FirebaseAuth.getInstance().getCurrentUser().getUid())).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot result = task.getResult();
                     if (result.exists()) {
