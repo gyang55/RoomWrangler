@@ -38,7 +38,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             peopleIcon = view.findViewById(R.id.imageView_people_reservation_card);
             roomImage = view.findViewById(R.id.imageView_room_reservation_card);
             timeIcon = view.findViewById(R.id.imageView_time_reservation_card);
-            //error here should be expected, this is a template
         }
 
         public TextView getPeople() { return People;}
@@ -61,7 +60,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.reservation_card, viewGroup, false); //error here should be expected, this is a template
+                .inflate(R.layout.reservation_card, viewGroup, false);
 
         return new ViewHolder(view);
     }
